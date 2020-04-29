@@ -1,26 +1,30 @@
 package com.bd2;
 
-import com.mongodb.BasicDBObject;
+import java.util.List;
+
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
 
-public class InsertTest {
+public class FindAllTest {
 
 	public static void main(String[] args) {
 		try
 		{
 			DB db = ConnectorDB.getDatabase("test");
 			DBCollection collection = db.getCollection("products");
-			DBObject product1 = new BasicDBObject("nombre", "producto_uno").append("precio", 14);
-		    WriteResult result = collection.insert(product1);
-		    System.out.print(result);
+			DBCursor cursor = collection.find();
+			List <DBObject> productos = cursor.toArray();
+			for(DBObject producto: productos){
+				System.out.println(producto);
+			}
 		}
 		catch(java.net.UnknownHostException  e)
 		{
 			e.printStackTrace();
 		}
+
 	}
 
 }
