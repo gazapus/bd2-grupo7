@@ -1,12 +1,9 @@
 package com.bd2;
 
 import java.net.UnknownHostException;
-import java.util.Set;
 
 import org.junit.Test;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 

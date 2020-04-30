@@ -1,7 +1,5 @@
 package com.bd2;
 
-import org.bson.types.ObjectId;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -17,7 +15,7 @@ public class UpdateTest {
 			BasicDBObject newDoc = new BasicDBObject("nombre", "producto_a_actualizar").append("precio", 10);
 			collection.insert(newDoc);		
 			// Actualizo el documento agregado
-			DBObject docQuery = new BasicDBObject("_id", (ObjectId)newDoc.get("_id"));
+			DBObject docQuery = new BasicDBObject("_id", newDoc.getObjectId("_id"));
 			DBObject docToUpdate = (DBObject) newDoc.copy();	
 			docToUpdate.put("nombre", "producto_actualizado");
 			collection.update(docQuery, docToUpdate);
