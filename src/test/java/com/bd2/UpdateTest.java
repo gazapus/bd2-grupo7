@@ -14,6 +14,7 @@ public class UpdateTest {
 			// Agrego un nuevo documento
 			BasicDBObject newDoc = new BasicDBObject("nombre", "producto_a_actualizar").append("precio", 10);
 			collection.insert(newDoc);		
+			
 			// Actualizo el documento agregado
 			DBObject docQuery = new BasicDBObject("_id", newDoc.getObjectId("_id"));
 			DBObject docToUpdate = (DBObject) newDoc.copy();	
