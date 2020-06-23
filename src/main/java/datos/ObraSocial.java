@@ -2,18 +2,18 @@ package datos;
 
 public class ObraSocial {
 	
-	private int cuit;
+	private String cuit;
 	private String nombre;
 	
-	public ObraSocial(int cuit, String nombre) {
+	public ObraSocial(String cuit, String nombre) {
 		this.cuit = cuit;
 		this.nombre = nombre;
 	}
 	
-	public int getCuit() {
+	public String getCuit() {
 		return cuit;
 	}
-	public void setCuit(int cuit) {
+	public void setCuit(String cuit) {
 		this.cuit = cuit;
 	}
 	public String getNombre() {
