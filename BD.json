@@ -41,7 +41,279 @@
                     "localidad": "CABA",
                     "calle": "Av. Juan B. Justo",
                     "numero": 4220
-               }
+               },
+               "empleados": [
+                    {
+                         "_id": 14,
+                         "documento": 30111000,
+                         "nombre": "Juan",
+                         "apellido": "Perez",
+                         "domicilio": {
+                              "_id": 15,
+                              "provincia": "CABA",
+                              "localidad": "CABA",
+                              "calle": "Av. Corrientes",
+                              "numero": 5500
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 1,
+                         "cuil": 20301110001,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 16,
+                         "documento": 30111001,
+                         "nombre": "Jose",
+                         "apellido": "Gomez",
+                         "domicilio": {
+                              "_id": 17,
+                              "provincia": "Buenos Aires",
+                              "localidad": "Lanus",
+                              "calle": "Av. San Martin",
+                              "numero": 550
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 2,
+                         "cuil": 20301110011,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 18,
+                         "documento": 30111002,
+                         "nombre": "Javier",
+                         "apellido": "Rodriguez",
+                         "domicilio": {
+                              "_id": 19,
+                              "provincia": "Buenos Aires",
+                              "localidad": "Lanus",
+                              "calle": "Av. San Martin",
+                              "numero": 560
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 3,
+                         "cuil": 20301110021,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 20,
+                         "documento": 30111004,
+                         "nombre": "Pablo",
+                         "apellido": "Perez",
+                         "domicilio": {
+                              "_id": 21,
+                              "provincia": "Buenos Aires",
+                              "localidad": "Avellaneda",
+                              "calle": "Av. Belgrano",
+                              "numero": 344
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 4,
+                         "cuil": 20301110044,
+                         "encargado": true
+                    }
+               ],
+               "ventas": [
+                    {
+                         "_id": 45,
+                         "fecha": "2020-05-01",
+                         "numeroDeTicket": 1,
+                         "total": 150,
+                         "formaDePago": {
+                              "_id": 43,
+                              "nombre": "efectivo"
+                         },
+                         "empleadoAtencion": {
+                              "_id": 16,
+                              "documento": 30111001,
+                              "nombre": "Jose",
+                              "apellido": "Gomez",
+                              "domicilio": {
+                                   "_id": 17,
+                                   "provincia": "Buenos Aires",
+                                   "localidad": "Lanus",
+                                   "calle": "Av. San Martin",
+                                   "numero": 550
+                              },
+                              "obraSocial": {
+                                   "_id": 1,
+                                   "nombre": "OSPF"
+                              },
+                              "nroAfiliado": 2,
+                              "cuil": 20301110011,
+                              "encargado": false
+                         },
+                         "empleadoCobro": {
+                              "_id": 14,
+                              "documento": 30111000,
+                              "nombre": "Juan",
+                              "apellido": "Perez",
+                              "domicilio": {
+                                   "_id": 15,
+                                   "provincia": "CABA",
+                                   "localidad": "CABA",
+                                   "calle": "Av. Corrientes",
+                                   "numero": 5500
+                              },
+                              "obraSocial": {
+                                   "_id": 1,
+                                   "nombre": "OSPF"
+                              },
+                              "nroAfiliado": 1,
+                              "cuil": 20301110001,
+                              "encargado": false
+                         },
+                         "cliente": {
+                              "_id": 32,
+                              "documento": 20222001,
+                              "nombre": "Juana",
+                              "apellido": "Gomez",
+                              "domicilio": {
+                                   "_id": 33,
+                                   "provincia": "CABA",
+                                   "localidad": "CABA",
+                                   "calle": "Av. Corrientes",
+                                   "numero": 5700
+                              },
+                              "obraSocial": {
+                                   "_id": 2,
+                                   "nombre": "IOMA"
+                              },
+                              "nroAfiliado": 1
+                         },
+                         "items": [
+                              {
+                                   "producto": {
+                                        "_id": 40,
+                                        "descripcion": "Bayaspirina",
+                                        "precio": 150,
+                                        "laboratorio": {
+                                             "_id": 4,
+                                             "nombre": "Bayer"
+                                        },
+                                        "tipoDeProducto": {
+                                             "_id": 38,
+                                             "nombre": "Medicamento"
+                                        }
+                                   },
+                                   "cantidad": 1
+                              }
+                         ]
+                    },
+                    {
+                         "_id": 46,
+                         "fecha": "2020-05-01",
+                         "numeroDeTicket": 2,
+                         "total": 250,
+                         "formaDePago": {
+                              "_id": 44,
+                              "nombre": "credito"
+                         },
+                         "empleadoAtencion": {
+                              "_id": 18,
+                              "documento": 30111002,
+                              "nombre": "Javier",
+                              "apellido": "Rodriguez",
+                              "domicilio": {
+                                   "_id": 19,
+                                   "provincia": "Buenos Aires",
+                                   "localidad": "Lanus",
+                                   "calle": "Av. San Martin",
+                                   "numero": 560
+                              },
+                              "obraSocial": {
+                                   "_id": 1,
+                                   "nombre": "OSPF"
+                              },
+                              "nroAfiliado": 3,
+                              "cuil": 20301110021,
+                              "encargado": false
+                         },
+                         "empleadoCobro": {
+                              "_id": 14,
+                              "documento": 30111000,
+                              "nombre": "Juan",
+                              "apellido": "Perez",
+                              "domicilio": {
+                                   "_id": 15,
+                                   "provincia": "CABA",
+                                   "localidad": "CABA",
+                                   "calle": "Av. Corrientes",
+                                   "numero": 5500
+                              },
+                              "obraSocial": {
+                                   "_id": 1,
+                                   "nombre": "OSPF"
+                              },
+                              "nroAfiliado": 1,
+                              "cuil": 20301110001,
+                              "encargado": false
+                         },
+                         "cliente": {
+                              "_id": 36,
+                              "documento": 20222003,
+                              "nombre": "Mario",
+                              "apellido": "Marquez",
+                              "domicilio": {
+                                   "_id": 37,
+                                   "provincia": "Buenos Aires",
+                                   "localidad": "San Martin",
+                                   "calle": "Av. Del Pino",
+                                   "numero": 3310
+                              },
+                              "obraSocial": {
+                                   "_id": 3,
+                                   "nombre": "OSPM"
+                              },
+                              "nroAfiliado": 1
+                         },
+                         "items": [
+                              {
+                                   "producto": {
+                                        "_id": 40,
+                                        "descripcion": "Bayaspirina",
+                                        "precio": 150,
+                                        "laboratorio": {
+                                             "_id": 4,
+                                             "nombre": "Bayer"
+                                        },
+                                        "tipoDeProducto": {
+                                             "_id": 38,
+                                             "nombre": "Medicamento"
+                                        }
+                                   },
+                                   "cantidad": 1
+                              },
+                              {
+                                   "producto": {
+                                        "_id": 42,
+                                        "descripcion": "Jabon de Glicerina",
+                                        "precio": 50,
+                                        "laboratorio": {
+                                             "_id": 6,
+                                             "nombre": "Avon"
+                                        },
+                                        "tipoDeProducto": {
+                                             "_id": 39,
+                                             "nombre": "Perfumeria"
+                                        }
+                                   },
+                                   "cantidad": 2
+                              }
+                         ]
+                    }
+               ]
           },
           {
                "_id": 10,
@@ -52,7 +324,69 @@
                     "localidad": "Lanus",
                     "calle": "Av. Hipolito Yrigoyen",
                     "numero": 3510
-               }
+               },
+               "empleados": [
+                    {
+                         "_id": 22,
+                         "documento": 30111005,
+                         "nombre": "Paola",
+                         "apellido": "Perez",
+                         "domicilio": {
+                              "_id": 23,
+                              "provincia": "Buenos Aires",
+                              "localidad": "Avellaneda",
+                              "calle": "Av. Belgrano",
+                              "numero": 344
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 5,
+                         "cuil": 20301110051,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 24,
+                         "documento": 30111006,
+                         "nombre": "Gabriel",
+                         "apellido": "Suarez",
+                         "domicilio": {
+                              "_id": 25,
+                              "provincia": "Buenos Aires",
+                              "localidad": "Quilmes",
+                              "calle": "Av. Los Quilmes",
+                              "numero": 2120
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 6,
+                         "cuil": 20301110061,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 26,
+                         "documento": 30111007,
+                         "nombre": "Raul",
+                         "apellido": "Cruz",
+                         "domicilio": {
+                              "_id": 27,
+                              "provincia": "CABA",
+                              "localidad": "CABA",
+                              "calle": "Av. Boedo",
+                              "numero": 1320
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 7,
+                         "cuil": 20301110071,
+                         "encargado": true
+                    }
+               ]
           },
           {
                "_id": 12,
@@ -63,7 +397,49 @@
                     "localidad": "Avellaneda",
                     "calle": "Av. Mitre",
                     "numero": 2105
-               }
+               },
+               "empleados": [
+                    {
+                         "_id": 28,
+                         "documento": 30111008,
+                         "nombre": "Roberta",
+                         "apellido": "Cruz",
+                         "domicilio": {
+                              "_id": 29,
+                              "provincia": "CABA",
+                              "localidad": "CABA",
+                              "calle": "Av. Saenz",
+                              "numero": 777
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 8,
+                         "cuil": 27301110081,
+                         "encargado": false
+                    },
+                    {
+                         "_id": 30,
+                         "documento": 30111009,
+                         "nombre": "Benito",
+                         "apellido": "Cruz",
+                         "domicilio": {
+                              "_id": 31,
+                              "provincia": "CABA",
+                              "localidad": "CABA",
+                              "calle": "Av. Boedo",
+                              "numero": 1320
+                         },
+                         "obraSocial": {
+                              "_id": 1,
+                              "nombre": "OSPF"
+                         },
+                         "nroAfiliado": 9,
+                         "cuil": 20301110091,
+                         "encargado": true
+                    }
+               ]
           }
      ],
      "empleados": [
@@ -85,18 +461,7 @@
                },
                "nroAfiliado": 1,
                "cuil": 20301110001,
-               "encargado": true,
-               "sucursal": {
-                    "_id": 9,
-                    "nombre": "Sucursal Villa Crespo",
-                    "domicilio": {
-                         "_id": 10,
-                         "provincia": "CABA",
-                         "localidad": "CABA",
-                         "calle": "Av. Juan B. Justo",
-                         "numero": 4220
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 16,
@@ -116,18 +481,7 @@
                },
                "nroAfiliado": 2,
                "cuil": 20301110011,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 9,
-                    "nombre": "Sucursal Villa Crespo",
-                    "domicilio": {
-                         "_id": 10,
-                         "provincia": "CABA",
-                         "localidad": "CABA",
-                         "calle": "Av. Juan B. Justo",
-                         "numero": 4220
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 18,
@@ -147,18 +501,7 @@
                },
                "nroAfiliado": 3,
                "cuil": 20301110021,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 9,
-                    "nombre": "Sucursal Villa Crespo",
-                    "domicilio": {
-                         "_id": 10,
-                         "provincia": "CABA",
-                         "localidad": "CABA",
-                         "calle": "Av. Juan B. Justo",
-                         "numero": 4220
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 20,
@@ -178,18 +521,7 @@
                },
                "nroAfiliado": 4,
                "cuil": 20301110044,
-               "encargado": true,
-               "sucursal": {
-                    "_id": 11,
-                    "nombre": "Sucursal Lanus",
-                    "domicilio": {
-                         "_id": 12,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Lanus",
-                         "calle": "Av. Hipolito Yrigoyen",
-                         "numero": 3510
-                    }
-               }
+               "encargado": true
           },
           {
                "_id": 22,
@@ -209,18 +541,7 @@
                },
                "nroAfiliado": 5,
                "cuil": 20301110051,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 11,
-                    "nombre": "Sucursal Lanus",
-                    "domicilio": {
-                         "_id": 12,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Lanus",
-                         "calle": "Av. Hipolito Yrigoyen",
-                         "numero": 3510
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 24,
@@ -240,18 +561,7 @@
                },
                "nroAfiliado": 6,
                "cuil": 20301110061,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 11,
-                    "nombre": "Sucursal Lanus",
-                    "domicilio": {
-                         "_id": 12,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Lanus",
-                         "calle": "Av. Hipolito Yrigoyen",
-                         "numero": 3510
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 26,
@@ -271,18 +581,7 @@
                },
                "nroAfiliado": 7,
                "cuil": 20301110071,
-               "encargado": true,
-               "sucursal": {
-                    "_id": 12,
-                    "nombre": "Sucursal Avellaneda",
-                    "domicilio": {
-                         "_id": 13,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Avellaneda",
-                         "calle": "Av. Mitre",
-                         "numero": 2105
-                    }
-               }
+               "encargado": true
           },
           {
                "_id": 28,
@@ -302,18 +601,7 @@
                },
                "nroAfiliado": 8,
                "cuil": 27301110081,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 12,
-                    "nombre": "Sucursal Avellaneda",
-                    "domicilio": {
-                         "_id": 13,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Avellaneda",
-                         "calle": "Av. Mitre",
-                         "numero": 2105
-                    }
-               }
+               "encargado": false
           },
           {
                "_id": 30,
@@ -333,18 +621,7 @@
                },
                "nroAfiliado": 9,
                "cuil": 20301110091,
-               "encargado": false,
-               "sucursal": {
-                    "_id": 12,
-                    "nombre": "Sucursal Avellaneda",
-                    "domicilio": {
-                         "_id": 13,
-                         "provincia": "Buenos Aires",
-                         "localidad": "Avellaneda",
-                         "calle": "Av. Mitre",
-                         "numero": 2105
-                    }
-               }
+               "encargado": true
           }
      ],
      "clientes": [
@@ -492,18 +769,7 @@
                     },
                     "nroAfiliado": 2,
                     "cuil": 20301110011,
-                    "encargado": false,
-                    "sucursal": {
-                         "_id": 9,
-                         "nombre": "Sucursal Villa Crespo",
-                         "domicilio": {
-                              "_id": 10,
-                              "provincia": "CABA",
-                              "localidad": "CABA",
-                              "calle": "Av. Juan B. Justo",
-                              "numero": 4220
-                         }
-                    }
+                    "encargado": false
                },
                "empleadoCobro": {
                     "_id": 14,
@@ -523,18 +789,7 @@
                     },
                     "nroAfiliado": 1,
                     "cuil": 20301110001,
-                    "encargado": true,
-                    "sucursal": {
-                         "_id": 9,
-                         "nombre": "Sucursal Villa Crespo",
-                         "domicilio": {
-                              "_id": 10,
-                              "provincia": "CABA",
-                              "localidad": "CABA",
-                              "calle": "Av. Juan B. Justo",
-                              "numero": 4220
-                         }
-                    }
+                    "encargado": false
                },
                "cliente": {
                     "_id": 32,
@@ -600,18 +855,7 @@
                     },
                     "nroAfiliado": 3,
                     "cuil": 20301110021,
-                    "encargado": false,
-                    "sucursal": {
-                         "_id": 9,
-                         "nombre": "Sucursal Villa Crespo",
-                         "domicilio": {
-                              "_id": 10,
-                              "provincia": "CABA",
-                              "localidad": "CABA",
-                              "calle": "Av. Juan B. Justo",
-                              "numero": 4220
-                         }
-                    }
+                    "encargado": false
                },
                "empleadoCobro": {
                     "_id": 14,
@@ -631,18 +875,7 @@
                     },
                     "nroAfiliado": 1,
                     "cuil": 20301110001,
-                    "encargado": true,
-                    "sucursal": {
-                         "_id": 9,
-                         "nombre": "Sucursal Villa Crespo",
-                         "domicilio": {
-                              "_id": 10,
-                              "provincia": "CABA",
-                              "localidad": "CABA",
-                              "calle": "Av. Juan B. Justo",
-                              "numero": 4220
-                         }
-                    }
+                    "encargado": true
                },
                "cliente": {
                     "_id": 36,
