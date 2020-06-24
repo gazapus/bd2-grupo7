@@ -2,6 +2,7 @@ package com.bd2;
 
 import java.net.UnknownHostException;
 
+import com.bd2.ConnectorDB;
 import com.mongodb.DB;
 
 public class ConnectDBTest {
