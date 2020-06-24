@@ -25,6 +25,18 @@ public class Venta {
 		this.cliente = cliente;
 		this.items = items;
 	}
+	
+	public Venta(int nroTicket, LocalDate fecha, FormaDePago formaDePago, Empleado empleadoAtencion,
+			Empleado empleadoCobro, Cliente cliente, List<Item>items) {
+		this.nroTicket = nroTicket;
+		this.fecha = fecha;
+		this.formaDePago = formaDePago;
+		this.empleadoAtencion = empleadoAtencion;
+		this.empleadoCobro = empleadoCobro;
+		this.cliente = cliente;
+		this.items = items;
+		this.total = calcularTotal();
+	}
 
 	public int getNroTicket() {
 		return nroTicket;
@@ -96,5 +108,13 @@ public class Venta {
 		return "Venta [nroTicket=" + nroTicket + ", fecha=" + fecha + ", total=" + total + ", formaDePago="
 				+ formaDePago + ", empleadoAtencion=" + empleadoAtencion + ", empleadoCobro=" + empleadoCobro
 				+ ", cliente=" + cliente + ", items=" + items + "]";
+	}
+	
+	private float calcularTotal() {
+		float total = 0;
+		for(Item item: items) {
+			total += item.getCantidad() * item.getProducto().getPrecio();
+		}
+		return total;
 	}
 }

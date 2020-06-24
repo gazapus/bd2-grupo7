@@ -11,7 +11,6 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
 import datos.Producto;
-import datos.TipoDeProducto;
 
 public class ProductoDao {
 	

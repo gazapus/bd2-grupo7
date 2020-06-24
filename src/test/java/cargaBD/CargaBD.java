@@ -1,6 +1,9 @@
 package cargaBD;
 
-import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.bd2.ConnectorDB;
 
@@ -16,16 +19,68 @@ import datos.Cliente;
 import datos.Domicilio;
 import datos.Empleado;
 import datos.FormaDePago;
+import datos.Item;
 import datos.Laboratorio;
 import datos.ObraSocial;
 import datos.Producto;
 import datos.TipoDeProducto;
+import datos.Venta;
 import datos.Sucursal;
 
 public class CargaBD {
 
-	//private final static Logger LOGGER = Logger.getLogger(CargaBD.class.getName());
-	
+	/**
+     * Genera un numero entero aleatorio en un rango
+     * @param desde numero desde el cual se podrá generar (incluido)
+     * @param hasta numero hasta el cual se generará (excluido)
+     * @return numero aleatorio 
+     */
+	public static int aleatorioEntre(int desde, int hasta) {
+		return (int) Math.floor(Math.random()*hasta + desde);
+	}
+
+	/**
+     * Genera una lista de ventas de una sucursal
+     * @param empleados lista de empleados de la sucursal que haran las ventas
+     * @param clientes lista de clientes que efecturan la venta
+     * @param formasDePago lista de medios de pagos que dispondrá la sucursal
+     * @param productos lista de productos que vende en la sucursal
+     * @param ventasMensuales cantidad de ventas por mes a generar
+     * @param meses cantidad de meses, partiendo del mes 1 (enero)
+     * @param nroTicketActual ultimo numero de ticket vendido
+     * @return una nueva lista de ventas generará aletoriamente
+    **/
+     public static List<Venta> generarVentas(
+			List<Empleado> empleados, 
+			Cliente[] clientes, 
+			FormaDePago[] formasDePago,
+			Producto [] productos,
+			int ventasMensuales,
+			int meses,
+			int nroTicketActual)
+	{
+		List <Venta> ventas = new ArrayList<Venta>();
+		for(int mes=1; mes<=meses; mes++) {
+			// 10 días por mes
+			for(int j=0; j<ventasMensuales; j++) {
+				nroTicketActual++;
+				LocalDate fecha = LocalDate.of(2020, mes, aleatorioEntre(1, 28));
+				FormaDePago pago = formasDePago[ aleatorioEntre(0, formasDePago.length)];
+				Empleado vendedor = empleados.get( aleatorioEntre(0, empleados.size()) );
+				Empleado cobrador = empleados.get( aleatorioEntre(0, empleados.size()) );
+				Cliente cliente = clientes[ aleatorioEntre(0, clientes.length) ];
+				List<Item> items = new ArrayList<Item>();
+				int cantidadItems = aleatorioEntre(1, 4);	// Se cargarán de 1 a 3 items por venta
+				for(int k=0; k<cantidadItems; k++) {
+					Producto producto = productos[ aleatorioEntre(0, productos.length) ];
+					items.add(new Item(producto, aleatorioEntre(1,4) ));	// Se cargarán hasta 3 unidades por producto
+				}
+				ventas.add( new Venta(nroTicketActual, fecha, pago, vendedor, cobrador, cliente, items) );
+			}
+		}	
+		return ventas;
+	}
+
 	// Método de carga de la BD con los datos de prueba
 	public static void main(String[] args) {
 		try {
@@ -60,19 +115,19 @@ public class CargaBD {
 			Cliente c3 = new Cliente(10000003, "Carlos", "Caceres", 144, 
 					new Domicilio("Calle 22", 13, "La Plata", "Buenos Aires"), ospm);
 			Cliente c4 = new Cliente(10000004, "Daniela", "Diaz", 145, 
-					new Domicilio("Mitre", 501, "Quilmes", "Buenos Aires"), osmedica);
+					new Domicilio("Mitre", 501, "CABA", "CABA"), osmedica);
 			Cliente c5 = new Cliente(10000005, "Elena", "Epo", 2, 
-					new Domicilio("Av. Nestor Kirchner", 125, "Lanus", "Buenos Aires"), osmedica);
+					new Domicilio("Av. Nestor Kirchner", 125, "CABA", "CABA"), osmedica);
 			Cliente c6 = new Cliente(10000006, "Francisco", "Figueroa", 3, 
-					new Domicilio("Pje. Cuenca", 212, "Lanus", "Buenos Aires"), osmedica);
+					new Domicilio("Pje. Cuenca", 212, "CABA", "CABA"), osmedica);
 			Cliente c7 = new Cliente(10000007, "Gustavo", "Guimenez", 4, 
-					new Domicilio("Pje. Cuenca", 216, "Lanus", "Buenos Aires"), ospm);
+					new Domicilio("Pje. Cuenca", 216, "Quilmes", "Buenos Aires"), ospm);
 			Cliente c8 = new Cliente(10000008, "Horacio", "Heredia", 6, 
-					new Domicilio("Pje. Valle", 1001, "Lanus", "Buenos Aires"), osmedica);
+					new Domicilio("Pje. Valle", 1001, "Quilmes", "Buenos Aires"), osmedica);
 			Cliente c9 = new Cliente(10000009, "Ignacio", "Iriarte", 7, 
-					new Domicilio("Pje. Valle", 1001, "Lanus", "Buenos Aires"), ospm);
+					new Domicilio("Pje. Valle", 1001, "Quilmes", "Buenos Aires"), ospm);
 			Cliente c10 = new Cliente(10000010, "Jiovanna", "Juarez", 8, 
-					new Domicilio("12 de Octubre", 110, "Quilmes", "Buenos Aires"), ospf);
+					new Domicilio("12 de Octubre", 110, "Lanus", "Buenos Aires"), ospf);
 			Cliente [] clientes = {c1,c2,c3,c4,c5,c6,c7,c8,c9,c10};
 			ClienteDao.agregar(clientes);
 			/*
@@ -117,16 +172,16 @@ public class CargaBD {
 			/*
 			 *  Productos
 			 */
-			Producto p1 = new Producto(1, "Bayaspirina", 60.0f, bayer, farmacia);
-			Producto p2 = new Producto(2, "Ibuprofeno", 80.0f, bayer, farmacia);
-			Producto p3 = new Producto(3, "Actron", 100.0f, bayer, farmacia);
-			Producto p4 = new Producto(4, "Loratadina", 110.0f, novartis, farmacia);
-			Producto p5 = new Producto(5, "Calcium", 200.0f, novartis, farmacia);
-			Producto p6 = new Producto(6, "Misoprostol", 500.0f, novartis, farmacia);
-			Producto p7 = new Producto(7, "Clonazepam", 450.0f, novartis, farmacia);
+			Producto p1 = new Producto(1, "Bayaspirina", 100.0f, bayer, farmacia);
+			Producto p2 = new Producto(2, "Ibuprofeno", 200.0f, bayer, farmacia);
+			Producto p3 = new Producto(3, "Actron", 300.0f, bayer, farmacia);
+			Producto p4 = new Producto(4, "Loratadina", 400.0f, novartis, farmacia);
+			Producto p5 = new Producto(5, "Calcium", 500.0f, novartis, farmacia);
+			Producto p6 = new Producto(6, "Misoprostol", 100.0f, novartis, farmacia);
+			Producto p7 = new Producto(7, "Clonazepam", 200.0f, novartis, farmacia);
 			Producto p8 = new Producto(8, "Jabon Eko", 300.0f, avon, perfumeria);
-			Producto p9 = new Producto(9, "Shampoo", 250.0f, avon, perfumeria);
-			Producto p10 = new Producto(10, "Cepillo", 100.0f, natura, perfumeria);
+			Producto p9 = new Producto(9, "Shampoo", 400.0f, avon, perfumeria);
+			Producto p10 = new Producto(10, "Cepillo", 500.0f, natura, perfumeria);
 			Producto [] productos = {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10};
 			ProductoDao.agregar(productos);
 			/*
@@ -138,15 +193,28 @@ public class CargaBD {
 			FormaDePagoDao.agregar(efectivo);
 			FormaDePagoDao.agregar(credito);
 			FormaDePagoDao.agregar(debito);
+			FormaDePago [] formasDePago = {efectivo, credito, debito};			
 			/*
-			 *  Sucursal (falta: empleados y ventas)
+			 *  Sucursales con sus ventas
 			 */
-			Sucursal s1 = new Sucursal(1, "Sucursal Quilmes", new Domicilio("Av. Mitre", 555, "Quilmes", "Buenos Aires"));
-			Sucursal s2 = new Sucursal(2, "Sucursal La Plata", new Domicilio("Av. 10", 10, "La Plata", "Buenos Aires"));
-			Sucursal s3 = new Sucursal(3, "Sucursal Once", new Domicilio("Av. Puerreydon", 12, "CABA", "CABA"));
+			// Sucursal 1:
+			List<Empleado> empleadosSuc1 = Arrays.asList(e1, e2, e3);
+			List <Venta> ventasSuc1 = generarVentas(empleadosSuc1, new Cliente[] {c1, c2, c3, c10}, formasDePago, productos, 10, 3, 0);
+			Sucursal s1 = new Sucursal(1, "Sucursal La Plata", 
+					new Domicilio("Calle 110", 123, "La Plata", "Buenos Aires"), empleadosSuc1, ventasSuc1);
 			SucursalDao.agregar(s1);
+			// Sucursal 2:
+			List<Empleado> empleadosSuc2 = Arrays.asList(e4, e5, e6);
+			List <Venta> ventasSuc2 = generarVentas(empleadosSuc2, new Cliente[] {c4, c5, c6, c10}, formasDePago, productos, 8, 3, 30);
+			Sucursal s2 = new Sucursal(2, "Sucursal Quilmes", new Domicilio("Mitre", 200, "Quilmes", "Buenos Aires"),
+					empleadosSuc2, ventasSuc2);
 			SucursalDao.agregar(s2);
-			SucursalDao.agregar(s3);		
+			// Sucursal 2:
+			List<Empleado> empleadosSuc3 = Arrays.asList(e7, e8, e9);
+			List <Venta> ventasSuc3 = generarVentas(empleadosSuc3, new Cliente[] {c7, c8, c9, c10}, formasDePago, productos, 12, 3, 54);
+			Sucursal s3 = new Sucursal(3, "Sucursal Once", new Domicilio("Av. Puerreydon", 12, "CABA", "CABA"),
+					empleadosSuc3, ventasSuc3);
+			SucursalDao.agregar(s3);
 		}
 		catch (Exception e)
 		{
