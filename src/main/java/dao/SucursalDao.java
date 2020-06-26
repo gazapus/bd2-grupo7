@@ -22,7 +22,7 @@ public class SucursalDao {
 	private static DB db;
 
 	public static void getInstance() throws UnknownHostException {
-		db = ConnectorDB.getDatabase("prueba");
+		db = ConnectorDB.getDatabase("farmacia");
 		collection = db.getCollection("sucursales");
 		gson = new Gson();
 	}

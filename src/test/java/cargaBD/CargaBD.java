@@ -40,7 +40,7 @@ public class CargaBD {
 	}
 
 	/**
-     * Genera una lista de ventas de una sucursal
+     * Genera una lista de ventas aleatorias para una sucursal
      * @param empleados lista de empleados de la sucursal que haran las ventas
      * @param clientes lista de clientes que efecturan la venta
      * @param formasDePago lista de medios de pagos que dispondrá la sucursal
@@ -61,7 +61,6 @@ public class CargaBD {
 	{
 		List <Venta> ventas = new ArrayList<Venta>();
 		for(int mes=1; mes<=meses; mes++) {
-			// 10 días por mes
 			for(int j=0; j<ventasMensuales; j++) {
 				nroTicketActual++;
 				LocalDate fecha = LocalDate.of(2020, mes, aleatorioEntre(1, 28));
@@ -81,10 +80,10 @@ public class CargaBD {
 		return ventas;
 	}
 
-	// Método de carga de la BD con los datos de prueba
+	// Método de carga de la BD con los datos de farmacia
 	public static void main(String[] args) {
 		try {
-			ConnectorDB.getDatabase("prueba").dropDatabase();
+			ConnectorDB.getDatabase("farmacia").dropDatabase();
 			/*
 			 * Instancia DAOs
 			 */
