@@ -2,28 +2,22 @@ package com.bd2;
 
 import dao.SucursalDao;
 import datos.Sucursal;
-import datos.Venta;
 
 public class PruebaDaos {
 
 	public static void main(String[] args) {
 		try {			
 			SucursalDao.getInstance();
-			Sucursal s1 = SucursalDao.traer(1);
-			System.out.println(s1.getCodigo());
-			System.out.println(s1.getNombre());
-			System.out.println(s1.getDomicilio());
-			System.out.println(s1.getEmpleados());
-			System.out.print("\n\nVENTAS:\n");
-			for(Venta v: s1.getVentas()) {
-				System.out.println("\n\t" + v.getNroTicket());
-				System.out.println("\t" + v.getFecha());
-				System.out.println("\t" + v.getCliente());
-				System.out.println("\t" + v.getFormaDePago());
-				System.out.println("\t" + v.getEmpleadoAtencion());
-				System.out.println("\t" + v.getEmpleadoCobro());
-				System.out.println("\t" + v.getItems());
-				System.out.println("\t" + v.getTotal());
+			// Trae la sucursal con codigo 1 de la DB como una instancia pojo
+			Sucursal suc1 = SucursalDao.traer(1);	
+			// modifica el nombre a la sucursal y lo guarda en la DB
+			suc1.setNombre("Sucursal Lanus Oeste");	
+			boolean sucursalModificada = SucursalDao.modificar(suc1);
+			// muestra el resultado de la operación
+			if(sucursalModificada) {
+				System.out.println("Sucursal modificada:\n" + SucursalDao.traer(1).getNombre());
+			} else {
+				System.out.println("No se pudo modificar");
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
