@@ -1,0 +1,151 @@
+[{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953842"
+  },
+  "codigo": 1,
+  "descripcion": "Bayaspirina",
+  "precio": 100,
+  "laboratorio": {
+    "cuit": "10300000011",
+    "nombre": "Bayer"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953843"
+  },
+  "codigo": 2,
+  "descripcion": "Ibuprofeno",
+  "precio": 200,
+  "laboratorio": {
+    "cuit": "10300000011",
+    "nombre": "Bayer"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953844"
+  },
+  "codigo": 3,
+  "descripcion": "Actron",
+  "precio": 300,
+  "laboratorio": {
+    "cuit": "10300000011",
+    "nombre": "Bayer"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953845"
+  },
+  "codigo": 4,
+  "descripcion": "Loratadina",
+  "precio": 400,
+  "laboratorio": {
+    "cuit": "10300000021",
+    "nombre": "Novartis"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953846"
+  },
+  "codigo": 5,
+  "descripcion": "Calcium",
+  "precio": 500,
+  "laboratorio": {
+    "cuit": "10300000021",
+    "nombre": "Novartis"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953847"
+  },
+  "codigo": 6,
+  "descripcion": "Misoprostol",
+  "precio": 100,
+  "laboratorio": {
+    "cuit": "10300000021",
+    "nombre": "Novartis"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953848"
+  },
+  "codigo": 7,
+  "descripcion": "Clonazepam",
+  "precio": 200,
+  "laboratorio": {
+    "cuit": "10300000021",
+    "nombre": "Novartis"
+  },
+  "tipo": {
+    "codigo": 1,
+    "nombre": "Farmacia"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953849"
+  },
+  "codigo": 8,
+  "descripcion": "Jabon Eko",
+  "precio": 300,
+  "laboratorio": {
+    "cuit": "10300000031",
+    "nombre": "Avon"
+  },
+  "tipo": {
+    "codigo": 2,
+    "nombre": "Perfumeria"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b995384a"
+  },
+  "codigo": 9,
+  "descripcion": "Shampoo",
+  "precio": 400,
+  "laboratorio": {
+    "cuit": "10300000031",
+    "nombre": "Avon"
+  },
+  "tipo": {
+    "codigo": 2,
+    "nombre": "Perfumeria"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b995384b"
+  },
+  "codigo": 10,
+  "descripcion": "Cepillo",
+  "precio": 500,
+  "laboratorio": {
+    "cuit": "10300000041",
+    "nombre": "Natura"
+  },
+  "tipo": {
+    "codigo": 2,
+    "nombre": "Perfumeria"
+  }
+}]

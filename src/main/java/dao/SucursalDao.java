@@ -14,7 +14,6 @@ import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
 import datos.Sucursal;
-import datos.Venta;
 
 public class SucursalDao {
 	private static DBCollection collection;

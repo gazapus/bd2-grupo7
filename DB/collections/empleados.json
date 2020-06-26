@@ -1,0 +1,181 @@
+[{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953833"
+  },
+  "cuil": "10200000011",
+  "encargado": false,
+  "dni": 20000001,
+  "nombre": "Aurelio",
+  "apellido": "Alvarez",
+  "nroAfiliado": 499,
+  "domicilio": {
+    "calle": "Calle 113",
+    "numero": 12,
+    "localidad": "La Plata",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953834"
+  },
+  "cuil": "10200000021",
+  "encargado": false,
+  "dni": 20000002,
+  "nombre": "Benito",
+  "apellido": "Barbaro",
+  "nroAfiliado": 200,
+  "domicilio": {
+    "calle": "Calle 123",
+    "numero": 122,
+    "localidad": "La Plata",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953835"
+  },
+  "cuil": "10200000031",
+  "encargado": true,
+  "dni": 20000003,
+  "nombre": "Celeste",
+  "apellido": "Cirez",
+  "nroAfiliado": 123,
+  "domicilio": {
+    "calle": "Calle 113",
+    "numero": 11,
+    "localidad": "Quilmes",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953836"
+  },
+  "cuil": "10200000041",
+  "encargado": false,
+  "dni": 20000004,
+  "nombre": "Damian",
+  "apellido": "Alvarez",
+  "nroAfiliado": 111,
+  "domicilio": {
+    "calle": "Calle 43",
+    "numero": 10,
+    "localidad": "Quilmes",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953837"
+  },
+  "cuil": "10200000051",
+  "encargado": false,
+  "dni": 20000005,
+  "nombre": "Elias",
+  "apellido": "Estevez",
+  "nroAfiliado": 99,
+  "domicilio": {
+    "calle": "Calle 198",
+    "numero": 33,
+    "localidad": "La Plata",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953838"
+  },
+  "cuil": "10200000061",
+  "encargado": true,
+  "dni": 20000006,
+  "nombre": "Fatima",
+  "apellido": "Fernandez",
+  "nroAfiliado": 88,
+  "domicilio": {
+    "calle": "Libertad",
+    "numero": 12,
+    "localidad": "CABA",
+    "provincia": "CABA"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953839"
+  },
+  "cuil": "10200000071",
+  "encargado": false,
+  "dni": 20000007,
+  "nombre": "Gustavo",
+  "apellido": "Garcia",
+  "nroAfiliado": 1232,
+  "domicilio": {
+    "calle": "Calle 123",
+    "numero": 12,
+    "localidad": "Lanus",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b995383a"
+  },
+  "cuil": "10200000081",
+  "encargado": false,
+  "dni": 20000008,
+  "nombre": "Hilda",
+  "apellido": "Heredia",
+  "nroAfiliado": 221,
+  "domicilio": {
+    "calle": "Calle 123",
+    "numero": 12,
+    "localidad": "Lanus",
+    "provincia": "Buenos Aires"
+  },
+  "obraSocial": {
+    "cuit": "33648104389",
+    "nombre": "OSPF"
+  }
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b995383b"
+  },
+  "cuil": "10200000091",
+  "encargado": true,
+  "dni": 20000009,
+  "nombre": "Isidro",
+  "apellido": "Ibañez",
+  "nroAfiliado": 983,
+  "domicilio": {
+    "calle": "Sarmiento",
+    "numero": 12,
+    "localidad": "CABA",
+    "provincia": "CABA"
+  },
+  "obraSocial": {
+    "cuit": "30707746463",
+    "nombre": "OSMEDICA"
+  }
+}]

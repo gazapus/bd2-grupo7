@@ -1,0 +1,13 @@
+[{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953840"
+  },
+  "codigo": 1,
+  "nombre": "Farmacia"
+},{
+  "_id": {
+    "$oid": "5ef664e6e9520916b9953841"
+  },
+  "codigo": 2,
+  "nombre": "Perfumeria"
+}]
