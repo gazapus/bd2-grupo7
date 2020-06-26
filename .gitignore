@@ -1,5 +1,7 @@
 *.class
 *.rar
 *.bak
-/.vscode
-/target
+.vscode/
+target/
+*.classpath
+bin/

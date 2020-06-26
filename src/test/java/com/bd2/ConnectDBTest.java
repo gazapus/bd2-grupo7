@@ -7,10 +7,10 @@ import com.mongodb.DB;
 
 public class ConnectDBTest {
 	
-	/* Test de conexion a la base de datos 'test */
+	/* Test de conexion a la base de datos 'farmacia */
 	public static void main(String[] args)  {
 		try {		
-			DB db = ConnectorDB.getDatabase("test");
+			DB db = ConnectorDB.getDatabase("farmacia");
 			System.out.println("Conectado a " + db.getName());
 		}
 		catch(UnknownHostException e){
