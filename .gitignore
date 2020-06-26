@@ -1,3 +1,5 @@
 *.class
 *.rar
 *.bak
+/.vscode
+/target
