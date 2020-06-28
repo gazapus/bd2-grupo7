@@ -1,4 +1,5 @@
-package datos;
+package pojos;
+
 
 public class Laboratorio {
 	private String cuit;

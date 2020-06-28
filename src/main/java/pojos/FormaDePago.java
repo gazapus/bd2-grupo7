@@ -1,11 +1,13 @@
-package datos;
+package pojos;
 
-public class TipoDeProducto {
+
+public class FormaDePago {
 	
 	private int codigo;
 	private String nombre;
 	
-	public TipoDeProducto(int codigo, String nombre) {
+	public FormaDePago(int codigo, String nombre) {
+		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 	}
@@ -28,6 +30,6 @@ public class TipoDeProducto {
 
 	@Override
 	public String toString() {
-		return "TipoDeProducto [codigo=" + codigo + ", nombre=" + nombre + "]";
+		return "FormaDePago [codigo=" + codigo + ", nombre=" + nombre + "]";
 	}
 }
