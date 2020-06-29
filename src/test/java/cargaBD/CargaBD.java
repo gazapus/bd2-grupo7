@@ -7,14 +7,7 @@ import java.util.List;
 
 import com.bd2.ConnectorDB;
 
-import dao.ClienteDao;
-import dao.EmpleadoDao;
-import dao.FormaDePagoDao;
-import dao.LaboratorioDao;
-import dao.ObraSocialDao;
-import dao.ProductoDao;
-import dao.SucursalDao;
-import dao.TipoDeProductoDao;
+import dao.VentaDao;
 import datos.Cliente;
 import datos.Domicilio;
 import datos.Empleado;
@@ -40,7 +33,7 @@ public class CargaBD {
 	}
 
 	/**
-     * Genera una lista de ventas de una sucursal
+     * Genera ventas de una sucursal
      * @param empleados lista de empleados de la sucursal que haran las ventas
      * @param clientes lista de clientes que efecturan la venta
      * @param formasDePago lista de medios de pagos que dispondrá la sucursal
@@ -50,7 +43,8 @@ public class CargaBD {
      * @param nroTicketActual ultimo numero de ticket vendido
      * @return una nueva lista de ventas generará aletoriamente
     **/
-     public static List<Venta> generarVentas(
+     public static void generarVentas(
+		 	Sucursal sucursal,
 			List<Empleado> empleados, 
 			Cliente[] clientes, 
 			FormaDePago[] formasDePago,
@@ -59,7 +53,6 @@ public class CargaBD {
 			int meses,
 			int nroTicketActual)
 	{
-		List <Venta> ventas = new ArrayList<Venta>();
 		for(int mes=1; mes<=meses; mes++) {
 			// 10 días por mes
 			for(int j=0; j<ventasMensuales; j++) {
@@ -75,10 +68,15 @@ public class CargaBD {
 					Producto producto = productos[ aleatorioEntre(0, productos.length) ];
 					items.add(new Item(producto, aleatorioEntre(1,4) ));	// Se cargarán hasta 3 unidades por producto
 				}
-				ventas.add( new Venta(nroTicketActual, fecha, pago, vendedor, cobrador, cliente, items) );
+				try {
+					VentaDao.agregar( new Venta(nroTicketActual, fecha, pago, vendedor, cobrador, cliente, sucursal, items));
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}	
-		return ventas;
 	}
 
 	// Método de carga de la BD con los datos de prueba
@@ -88,23 +86,13 @@ public class CargaBD {
 			/*
 			 * Instancia DAOs
 			 */
-			ObraSocialDao.getInstance();
-			ClienteDao.getInstance();
-			EmpleadoDao.getInstance();
-			LaboratorioDao.getInstance();
-			TipoDeProductoDao.getInstance();
-			ProductoDao.getInstance();
-			FormaDePagoDao.getInstance();
-			SucursalDao.getInstance();
+			VentaDao.getInstance();
 			/*
 			 *  Obras sociales
 			 */
 			ObraSocial ospm = new ObraSocial("30598615825", "OSPM");
 			ObraSocial ospf = new ObraSocial("33648104389", "OSPF");
 			ObraSocial osmedica = new ObraSocial("30707746463", "OSMEDICA");
-			ObraSocialDao.agregar(ospm);
-			ObraSocialDao.agregar(ospf);
-			ObraSocialDao.agregar(osmedica);
 			/*
 			 *  Clientes
 			 */
@@ -128,8 +116,6 @@ public class CargaBD {
 					new Domicilio("Pje. Valle", 1001, "Quilmes", "Buenos Aires"), ospm);
 			Cliente c10 = new Cliente(10000010, "Jiovanna", "Juarez", 8, 
 					new Domicilio("12 de Octubre", 110, "Lanus", "Buenos Aires"), ospf);
-			Cliente [] clientes = {c1,c2,c3,c4,c5,c6,c7,c8,c9,c10};
-			ClienteDao.agregar(clientes);
 			/*
 			 *  Empleados
 			 */
@@ -151,8 +137,6 @@ public class CargaBD {
 					new Domicilio("Calle 123", 12, "Lanus", "Buenos Aires"), ospf, "10200000081", false);
 			Empleado e9 = new Empleado(20000009, "Isidro", "Ibañez", 983, 
 					new Domicilio("Sarmiento", 12, "CABA", "CABA"), osmedica, "10200000091", true);
-			Empleado [] empleados = {e1,e2,e3,e4,e5,e6,e7,e8,e9};
-			EmpleadoDao.agregar(empleados);
 			/*
 			 *  Laboratorios
 			 */
@@ -160,15 +144,11 @@ public class CargaBD {
 			Laboratorio novartis = new Laboratorio("10300000021", "Novartis");
 			Laboratorio avon = new Laboratorio("10300000031", "Avon");
 			Laboratorio natura = new Laboratorio("10300000041", "Natura");
-			Laboratorio [] laboratorios = {bayer, novartis, avon, natura};
-			LaboratorioDao.agregar(laboratorios);
 			/*
 			 *  Tipos de Productos
 			 */
 			TipoDeProducto farmacia = new TipoDeProducto(1, "Farmacia");
 			TipoDeProducto perfumeria = new TipoDeProducto(2, "Perfumeria");
-			TipoDeProductoDao.agregar(farmacia);
-			TipoDeProductoDao.agregar(perfumeria);
 			/*
 			 *  Productos
 			 */
@@ -183,38 +163,36 @@ public class CargaBD {
 			Producto p9 = new Producto(9, "Shampoo", 400.0f, avon, perfumeria);
 			Producto p10 = new Producto(10, "Cepillo", 500.0f, natura, perfumeria);
 			Producto [] productos = {p1,p2,p3,p4,p5,p6,p7,p8,p9,p10};
-			ProductoDao.agregar(productos);
 			/*
 			 *  Formas de Pago
 			 */
 			FormaDePago efectivo = new FormaDePago(1, "EFECTIVO");
 			FormaDePago credito = new FormaDePago(2, "CREDITO");
 			FormaDePago debito = new FormaDePago(3, "DEBITO");
-			FormaDePagoDao.agregar(efectivo);
-			FormaDePagoDao.agregar(credito);
-			FormaDePagoDao.agregar(debito);
 			FormaDePago [] formasDePago = {efectivo, credito, debito};			
 			/*
 			 *  Sucursales con sus ventas
 			 */
-			// Sucursal 1:
+			
+			 // Sucursal 1:
 			List<Empleado> empleadosSuc1 = Arrays.asList(e1, e2, e3);
-			List <Venta> ventasSuc1 = generarVentas(empleadosSuc1, new Cliente[] {c1, c2, c3, c10}, formasDePago, productos, 10, 3, 0);
+			
 			Sucursal s1 = new Sucursal(1, "Sucursal La Plata", 
-					new Domicilio("Calle 110", 123, "La Plata", "Buenos Aires"), empleadosSuc1, ventasSuc1);
-			SucursalDao.agregar(s1);
+					new Domicilio("Calle 110", 123, "La Plata", "Buenos Aires"), empleadosSuc1);
+			generarVentas(s1, empleadosSuc1, new Cliente[] {c1, c2, c3, c10}, formasDePago, productos, 10, 3, 0);
+			
 			// Sucursal 2:
 			List<Empleado> empleadosSuc2 = Arrays.asList(e4, e5, e6);
-			List <Venta> ventasSuc2 = generarVentas(empleadosSuc2, new Cliente[] {c4, c5, c6, c10}, formasDePago, productos, 8, 3, 30);
+			
 			Sucursal s2 = new Sucursal(2, "Sucursal Quilmes", new Domicilio("Mitre", 200, "Quilmes", "Buenos Aires"),
-					empleadosSuc2, ventasSuc2);
-			SucursalDao.agregar(s2);
+					empleadosSuc2);
+			generarVentas(s2, empleadosSuc2, new Cliente[] {c4, c5, c6, c10}, formasDePago, productos, 8, 3, 30);
+			
 			// Sucursal 2:
 			List<Empleado> empleadosSuc3 = Arrays.asList(e7, e8, e9);
-			List <Venta> ventasSuc3 = generarVentas(empleadosSuc3, new Cliente[] {c7, c8, c9, c10}, formasDePago, productos, 12, 3, 54);
 			Sucursal s3 = new Sucursal(3, "Sucursal Once", new Domicilio("Av. Puerreydon", 12, "CABA", "CABA"),
-					empleadosSuc3, ventasSuc3);
-			SucursalDao.agregar(s3);
+					empleadosSuc3);
+			generarVentas(s3, empleadosSuc3, new Cliente[] {c7, c8, c9, c10}, formasDePago, productos, 12, 3, 54);
 		}
 		catch (Exception e)
 		{

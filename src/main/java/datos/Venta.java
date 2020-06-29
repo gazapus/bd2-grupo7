@@ -12,10 +12,11 @@ public class Venta {
 	private Empleado empleadoAtencion;
 	private Empleado empleadoCobro;
 	private Cliente cliente;
+	private Sucursal sucursal;
 	private List<Item> items;
 	
 	public Venta(int nroTicket, LocalDate fecha, float total, FormaDePago formaDePago, Empleado empleadoAtencion,
-			Empleado empleadoCobro, Cliente cliente, List<Item>items) {
+			Empleado empleadoCobro, Cliente cliente, Sucursal sucursal, List<Item>items) {
 		this.nroTicket = nroTicket;
 		this.fecha = fecha;
 		this.total = total;
@@ -23,17 +24,19 @@ public class Venta {
 		this.empleadoAtencion = empleadoAtencion;
 		this.empleadoCobro = empleadoCobro;
 		this.cliente = cliente;
+		this.sucursal = sucursal;
 		this.items = items;
 	}
 	
 	public Venta(int nroTicket, LocalDate fecha, FormaDePago formaDePago, Empleado empleadoAtencion,
-			Empleado empleadoCobro, Cliente cliente, List<Item>items) {
+			Empleado empleadoCobro, Cliente cliente, Sucursal sucursal, List<Item>items) {
 		this.nroTicket = nroTicket;
 		this.fecha = fecha;
 		this.formaDePago = formaDePago;
 		this.empleadoAtencion = empleadoAtencion;
 		this.empleadoCobro = empleadoCobro;
 		this.cliente = cliente;
+		this.sucursal = sucursal;
 		this.items = items;
 		this.total = calcularTotal();
 	}
@@ -94,6 +97,13 @@ public class Venta {
 		this.cliente = cliente;
 	}
 	
+	public Sucursal getSucursal() {
+		return sucursal;
+	}
+
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
+	}
 
 	public List<Item> getItems() {
 		return items;
