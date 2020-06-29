@@ -50,7 +50,7 @@ db.ventas.aggregate(
      }  
 )
 
-// 5.1 Ranking de ventas de productos por sucursal, entre fechas, por monto. 
+// 5.2 Ranking de ventas de productos por sucursal, entre fechas, por monto. 
 db.ventas.aggregate(
      {
           $addFields: {
