@@ -6,7 +6,7 @@ function traerFechaCorta(fecha) {
 
 // Consulta 5
 // Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por monto. 
-function rankingDeProductosPorMonto(desde, hasta, codigoSucursal={ $exists: true }) {
+function rankingDeProductosPorMonto(desde, hasta, codigoSucursal = { $exists: true }) {
      var cursor = db.ventas.aggregate(
           {
                $addFields: {
@@ -55,9 +55,3 @@ function rankingDeProductosPorMonto(desde, hasta, codigoSucursal={ $exists: true
           print(tojson(cursor.next()));
      }
 }
-
-rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date());    //cadena completa
-rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 1); // sucursal 1
-rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 2); // sucursal 2
-rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 3); // sucursal 3
-
