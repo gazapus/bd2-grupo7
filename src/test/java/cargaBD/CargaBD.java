@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -25,6 +26,7 @@ import pojos.Producto;
 import pojos.Sucursal;
 import pojos.TipoDeProducto;
 import pojos.Venta;
+import util.LocalDateAdapter;
 
 public class CargaBD {
 
@@ -185,11 +187,14 @@ public class CargaBD {
 			mongoClient.dropDatabase("farmacia"); // Elimina la base de datos si existe
 			MongoDatabase db = mongoClient.getDatabase("farmacia");
 			MongoCollection <Document> collection = db.getCollection("ventas");
-			Gson gson = new Gson();
+			Gson gson = new GsonBuilder()
+				.setPrettyPrinting()
+				.registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+				.create();			
 			for(Venta venta: ventas) {
-				String jsonVenta = gson.toJson(venta);
-				Document docVenta = Document.parse(jsonVenta);
-				collection.insertOne(docVenta);
+			String jsonVenta = gson.toJson(venta);
+			Document docVenta = Document.parse(jsonVenta);
+			collection.insertOne(docVenta);
 			}
 			System.out.println("\nCarga completa");
 		} 
