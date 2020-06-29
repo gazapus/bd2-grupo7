@@ -30,7 +30,7 @@ function rankingDeProductosPorMonto(desde, hasta, codigoSucursal = { $exists: tr
           {
                $group: {
                     _id: {
-                         "producto": "$items.producto.descripcion"
+                         "producto": "$items.producto"
                     },
                     monto: { $sum: { $multiply: ["$items.producto.precio", "$items.cantidad"] } }
                }
@@ -50,6 +50,55 @@ function rankingDeProductosPorMonto(desde, hasta, codigoSucursal = { $exists: tr
      );
      let sucursal = (typeof codigoSucursal === 'number') ? ("sucursal " + codigoSucursal) : "cadena completa";
      print("Productos mas vendidos de la " + sucursal + " por monto entre " +
+          traerFechaCorta(desde) + " y " + traerFechaCorta(hasta));
+     while (cursor.hasNext()) {
+          print(tojson(cursor.next()));
+     }
+}
+
+// Consulta 7
+// Ranking de clientes por compras, total de la cadena y por sucursal, entre fechas, por monto. 
+function rankingDeClientesPorMonto(desde, hasta, codigoSucursal = { $exists: true }) {
+     var cursor = db.ventas.aggregate(
+          {
+               $addFields: {
+                    fecha: {
+                         "$toDate": "$fecha"
+                    }
+               }
+          },
+          {
+               $match: {
+                    fecha: {
+                         $gte: desde,
+                         $lt: hasta
+                    },
+                    "sucursal.codigo": codigoSucursal
+               }
+          },
+          {
+               $group: {
+                    _id: {
+                         "cliente": "$cliente"
+                    },
+                    monto: { $sum: "$total"}
+               }
+          },
+          {
+               $project: {
+                    _id: 0,
+                    cliente: "$_id.cliente",
+                    monto: 1
+               }
+          },
+          {
+               $sort: {
+                    monto: -1
+               }
+          }
+     );
+     let sucursal = (typeof codigoSucursal === 'number') ? ("sucursal " + codigoSucursal) : "cadena completa";
+     print("Rankin de clientes por monto de la " + sucursal + " entre " +
           traerFechaCorta(desde) + " y " + traerFechaCorta(hasta));
      while (cursor.hasNext()) {
           print(tojson(cursor.next()));
