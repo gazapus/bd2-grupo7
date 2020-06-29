@@ -18,7 +18,7 @@ public class ClienteDao {
 	private static DB db;
 	
 	public static void getInstance() throws UnknownHostException {
-		db = ConnectorDB.getDatabase("prueba");
+		db = ConnectorDB.getDatabase("farmacia");
 		collection = db.getCollection("clientes");
 		gson = new Gson();
 	}

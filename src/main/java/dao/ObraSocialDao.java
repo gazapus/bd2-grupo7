@@ -19,7 +19,7 @@ public class ObraSocialDao {
 	private static DB db;
 	
 	public static void getInstance() throws UnknownHostException {
-		db = ConnectorDB.getDatabase("prueba");
+		db = ConnectorDB.getDatabase("farmacia");
 		collection = db.getCollection("obraSocial");
 		gson = new Gson();
 	}
