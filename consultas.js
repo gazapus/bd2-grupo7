@@ -1,94 +1,63 @@
-// 1. Detalle y totales de ventas para la cadena completa y por sucursal, entre fechas. 
-// 1.1 Detalle de ventas para la cadena completa entre fechas. 
+var db = connect('127.0.0.1:27017/farmacia');
 
-// 1.2 Totales de ventas para la cadena completa entre fechas. 
+function traerFechaCorta(fecha) {
+     return fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+}
 
-// 1.3 Detalle de ventas por sucursal entre fechas. 
-
-// 1.4 Totales de ventas por sucursal entre fechas.
-
-// 5. Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por monto. 
-// 5.1 Ranking de ventas de productos en total de la cadena, entre fechas, por monto. 
-db.ventas.aggregate(
-     {
-          $addFields: {
-               fecha: {
-                    "$toDate": "$fecha"
+// Consulta 5
+// Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por monto. 
+function rankingDeProductosPorMonto(desde, hasta, codigoSucursal={ $exists: true }) {
+     var cursor = db.ventas.aggregate(
+          {
+               $addFields: {
+                    fecha: {
+                         "$toDate": "$fecha"
+                    }
+               }
+          },
+          {
+               $match: {
+                    fecha: {
+                         $gte: desde,
+                         $lt: hasta
+                    },
+                    "sucursal.codigo": codigoSucursal
+               }
+          },
+          {
+               $unwind: "$items"
+          },
+          {
+               $group: {
+                    _id: {
+                         "producto": "$items.producto.descripcion"
+                    },
+                    monto: { $sum: { $multiply: ["$items.producto.precio", "$items.cantidad"] } }
+               }
+          },
+          {
+               $project: {
+                    _id: 0,
+                    producto: "$_id.producto",
+                    monto: 1
+               }
+          },
+          {
+               $sort: {
+                    monto: -1
                }
           }
-     },
-     {
-          $match: {
-               fecha: {
-                    $gte: ISODate("2020-01-01T00:00:00.000Z"),
-                    $lt: ISODate("2020-06-28T00:00:00.000Z")
-               }
-          }
-     },
-     {
-          $unwind: "$items"
-     },
-     {
-          $group: {
-               _id: {
-                    "producto": "$items.producto.descripcion"
-               },
-               monto: { $sum: { $multiply: ["$items.producto.precio", "$items.cantidad"] } }
-          }
-     },
-     {
-          $project: {
-               _id: 0,
-               producto: "$_id.producto",
-               total: "$monto"
-          }
-     },
-     {
-          $sort: {
-               total: -1
-          }
-     }  
-)
+     );
+     let sucursal = (typeof codigoSucursal === 'number') ? ("sucursal " + codigoSucursal) : "cadena completa";
+     print("Productos mas vendidos de la " + sucursal + " por monto entre " +
+          traerFechaCorta(desde) + " y " + traerFechaCorta(hasta));
+     while (cursor.hasNext()) {
+          print(tojson(cursor.next()));
+     }
+}
 
-// 5.2 Ranking de ventas de productos por sucursal, entre fechas, por monto. 
-db.ventas.aggregate(
-     {
-          $addFields: {
-               fecha: {
-                    "$toDate": "$fecha"
-               }
-          }
-     },
-     {
-          $match: {
-               "sucursal.codigo": 1,
-               fecha: {
-                    $gte: ISODate("2020-01-01T00:00:00.000Z"),
-                    $lt: ISODate("2020-06-28T00:00:00.000Z")
-               }
-          }
-     },
-     {
-          $unwind: "$items"
-     },
-     {
-          $group: {
-               _id: {
-                    "producto": "$items.producto.descripcion"
-               },
-               monto: { $sum: { $multiply: ["$items.producto.precio", "$items.cantidad"] } }
-          }
-     },
-     {
-          $project: {
-               _id: 0,
-               producto: "$_id.producto",
-               total: "$monto"
-          }
-     },
-     {
-          $sort: {
-               total: -1
-          }
-     }  
-)
+rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date());    //cadena completa
+rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 1); // sucursal 1
+rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 2); // sucursal 2
+rankingDeProductosPorMonto(new Date(2020, 1, 1), new Date(), 3); // sucursal 3
+
