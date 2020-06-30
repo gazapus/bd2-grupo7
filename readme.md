@@ -6,6 +6,8 @@ Las consultas se encuentran el archivo **consultas.js** y cada consulta se encue
   
 Para correr las consultas primero hay que cargarlas al cliente de mongo, puede hacerse desde la consola del mismo mediante el comando: 
 >load("{path}/consultas.js)  
-Luego pueden llamarse a las consultas como funciones pasando los parametros necesarios o también puede ejecutar los test de las consultas que se encuentran ene el archivo **testConsultas.js** a través del mismo comando _load("{path}/test_consultas.js")_
+
+Luego pueden llamarse a las consultas por el nombre de sus funciones pasando los parametros necesarios o también puede ejecutar el archivo **test_consultas** que ya contiene los test de las consultas mediante el mismo comando _load("{path}/test_consultas.js")_
+
 ---
 (*) A confirmar
