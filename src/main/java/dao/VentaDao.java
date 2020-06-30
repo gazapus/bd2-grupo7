@@ -20,7 +20,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.WriteResult;
 
 import pojos.Venta;
-import util.LocalDateAdapter;
 
 public class VentaDao {
     private static DBCollection collection;
