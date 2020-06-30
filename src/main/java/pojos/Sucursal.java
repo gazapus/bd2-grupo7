@@ -17,12 +17,8 @@ public class Sucursal {
 		this.domicilio = domicilio;
 		this.empleados = empleados;
 	}
-	
-	public Sucursal(int codigo, String nombre, Domicilio domicilio) {
-		this.codigo = codigo;
-		this.nombre = nombre;
-		this.domicilio = domicilio;
-		this.empleados = new ArrayList <Empleado> ();
+
+	public Sucursal() {
 	}
 
 	public int getCodigo() {
