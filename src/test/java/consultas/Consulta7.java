@@ -16,8 +16,8 @@ public class Consulta7 {
                String respuesta = VentaDao.rankingDeClientesPorMonto(fechaDesde, fechaHasta);
                System.out.println("RANKING DE CLIENTES POR MONTO EN TODA LA CADENA");
                System.out.println(respuesta);
-               // sucursal 1
-               Sucursal sucursal1 = new Sucursal();    // Debería traerla desde la bd pero no es contemplado en este trabajo
+               // sucursal 1 (debería traerla desde la base de datos pero no está contemplado en este TP)
+               Sucursal sucursal1 = new Sucursal();  
                sucursal1.setCodigo(1);
                String respuesta2 = VentaDao.rankingDeClientesPorMonto(fechaDesde, fechaHasta, sucursal1);
                System.out.println("\nRANKING DE CLIENTES POR MONTO EN SUCURSAL 1");
