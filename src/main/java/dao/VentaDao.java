@@ -211,4 +211,44 @@ public class VentaDao {
 		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
 		return gson.toJson(jsonElement);
 	}
+
+	/**
+	 * Detalles y totales de ventas para la cadena completa
+	**/
+	public static String detallesYTotalesDeVentasPorMedioDePago(LocalDate fechaDesde, LocalDate fechaHasta) {
+		return detallesYTotalesDeVentasPorMedioDePago(fechaDesde, fechaHasta, null);
+	}
+
+	/**
+	 * Detalles y totales de ventas por sucursal entre fechas
+	**/
+	public static String detallesYTotalesDeVentasPorMedioDePago(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal) {
+		// Filtro entre fechas y sucursal
+		DBObject matchFields = new BasicDBObject();
+		matchFields.put("fecha", BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get());
+		matchFields.put("sucursal.codigo",
+				(sucursal == null) ? (new BasicDBObject("$exists", true)) : sucursal.getCodigo());
+		DBObject match = new BasicDBObject("$match", matchFields);
+		// Agrupo por sucursal y medio de pago y enlisto sus detalles
+		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("sucursal", "$sucursal.nombre").append(
+			"formaDePago", "$formaDePago.nombre"));
+		DBObject venta = new BasicDBObject("total", "$total");
+		venta.put("detalle_venta", "$items");
+		groupfields.put("ventas", new BasicDBObject("$addToSet", venta));
+		DBObject group = new BasicDBObject("$group", groupfields);
+		// Elijo lo que se va a mostrar
+		DBObject projectFields = new BasicDBObject("_id", 0);
+		projectFields.put("sucursal", "$_id.sucursal");
+		projectFields.put("medio_de_pago", "$_id.formaDePago");
+		projectFields.put("ventas", 1);
+		DBObject project = new BasicDBObject("$project", projectFields);
+		// Realiza la consulta de agregacion
+		List<DBObject> pipeline = Arrays.asList(match, group, project);
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
+
+
 }

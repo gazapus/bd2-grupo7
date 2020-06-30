@@ -53,6 +53,57 @@ function detallesYTotalesDeVentas(desde, hasta, codigoSucursal = { $exists: true
      }
 }
 
+// Consulta 3
+//Detalle y totales de cobranza para la cadena completa y por sucursal, por medio de pago y entre fechas. 
+function detallesYTotalesDeVentasPorMedioDePago(desde, hasta, codigoSucursal = { $exists: true }) {
+     var cursor = db.ventas.aggregate(
+          {
+               $addFields: {
+                    fecha: {
+                         "$toDate": "$fecha"
+                    }
+               }
+          },
+          {
+               $match: {
+                    fecha: {
+                         $gt: desde,
+                         $lt: hasta,
+                    },
+                    "sucursal.codigo": codigoSucursal
+               }
+          },
+          {
+               $group: {
+                    _id: {
+                         "sucursal": "$sucursal.nombre",
+                         "formaDePago": "$formaDePago.nombre"
+                    },
+                    ventas: {
+                         $addToSet: {
+                              total: "$total",
+                              detalle_venta: "$items"
+                         }
+                    }
+               }
+          },
+          {
+               $project: {
+                    _id: 0,
+                    sucursal: "$_id.sucursal",
+                    medio_de_pago: "$_id.formaDePago",
+                    ventas: 1
+               }
+          }
+     );
+     let sucursal = (typeof codigoSucursal === 'number') ? ("sucursal " + codigoSucursal) : "cadena completa";
+     print("Detalles y totales, por medio de pago, de la " + sucursal + " entre " +
+          traerFechaCorta(desde) + " y " + traerFechaCorta(hasta));
+     while (cursor.hasNext()) {
+          print(tojson(cursor.next()));
+     }
+}
+
 // Consulta 5
 // Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por monto. 
 function rankingDeProductosPorMonto(desde, hasta, codigoSucursal = { $exists: true }) {
