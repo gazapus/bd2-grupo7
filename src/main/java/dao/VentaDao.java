@@ -19,7 +19,7 @@ import com.mongodb.DBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.WriteResult;
 
-import datos.Venta;
+import pojos.Venta;
 
 public class VentaDao {
     private static DBCollection collection;
@@ -27,7 +27,7 @@ public class VentaDao {
 	private static DB db;
 	
 	public static void getInstance() throws UnknownHostException {
-		db = ConnectorDB.getDatabase("prueba");
+		db = ConnectorDB.getDatabase("farmacia");
 		collection = db.getCollection("ventas");
 		gson = new GsonBuilder()
 			.setPrettyPrinting()
@@ -49,7 +49,7 @@ public class VentaDao {
 		}
 	}
 	
-	public static Venta traer(int nroTicket) {
+	public static Venta traer(String nroTicket) {
 		DBObject result = collection.findOne( new BasicDBObject("nroTicket", nroTicket));
 		if(result == null){
 			return null;

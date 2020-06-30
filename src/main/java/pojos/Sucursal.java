@@ -1,6 +1,6 @@
-package datos;
+package pojos;
 
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +59,12 @@ public class Sucursal {
 
 	@Override
 	public String toString() {
-		return "Sucursal [codigo=" + codigo + ", nombre=" + nombre + ", domicilio=" + domicilio + ", empleados="
-				+ empleados + "]";
+		return "{" +
+			" codigo='" + getCodigo() + "'" +
+			", nombre='" + getNombre() + "'" +
+			", domicilio='" + getDomicilio() + "'" +
+			", empleados='" + getEmpleados() + "'" +
+			"}";
 	}
+	
 }

@@ -1,11 +1,11 @@
-package datos;
+package pojos;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class Venta {
 	
-	private int nroTicket;
+	private String nroTicket;
 	private LocalDate fecha;
 	private float total;
 	private FormaDePago formaDePago;
@@ -15,42 +15,30 @@ public class Venta {
 	private Sucursal sucursal;
 	private List<Item> items;
 	
-	public Venta(int nroTicket, LocalDate fecha, float total, FormaDePago formaDePago, Empleado empleadoAtencion,
-			Empleado empleadoCobro, Cliente cliente, Sucursal sucursal, List<Item>items) {
+	public Venta(String nroTicket, LocalDate fecha, FormaDePago formaDePago, Empleado empleadoAtencion,
+			Empleado empleadoCobro, Sucursal sucursal, Cliente cliente, List<Item> items) {
 		this.nroTicket = nroTicket;
 		this.fecha = fecha;
-		this.total = total;
 		this.formaDePago = formaDePago;
 		this.empleadoAtencion = empleadoAtencion;
 		this.empleadoCobro = empleadoCobro;
-		this.cliente = cliente;
 		this.sucursal = sucursal;
-		this.items = items;
-	}
-	
-	public Venta(int nroTicket, LocalDate fecha, FormaDePago formaDePago, Empleado empleadoAtencion,
-			Empleado empleadoCobro, Cliente cliente, Sucursal sucursal, List<Item>items) {
-		this.nroTicket = nroTicket;
-		this.fecha = fecha;
-		this.formaDePago = formaDePago;
-		this.empleadoAtencion = empleadoAtencion;
-		this.empleadoCobro = empleadoCobro;
 		this.cliente = cliente;
 		this.sucursal = sucursal;
 		this.items = items;
 		this.total = calcularTotal();
 	}
 
-	public int getNroTicket() {
-		return nroTicket;
+	public String getNroTicket() {
+		return this.nroTicket;
 	}
 
-	public void setNroTicket(int nroTicket) {
+	public void setNroTicket(String nroTicket) {
 		this.nroTicket = nroTicket;
 	}
 
 	public LocalDate getFecha() {
-		return fecha;
+		return this.fecha;
 	}
 
 	public void setFecha(LocalDate fecha) {
@@ -58,7 +46,7 @@ public class Venta {
 	}
 
 	public float getTotal() {
-		return total;
+		return this.total;
 	}
 
 	public void setTotal(float total) {
@@ -66,7 +54,7 @@ public class Venta {
 	}
 
 	public FormaDePago getFormaDePago() {
-		return formaDePago;
+		return this.formaDePago;
 	}
 
 	public void setFormaDePago(FormaDePago formaDePago) {
@@ -74,7 +62,7 @@ public class Venta {
 	}
 
 	public Empleado getEmpleadoAtencion() {
-		return empleadoAtencion;
+		return this.empleadoAtencion;
 	}
 
 	public void setEmpleadoAtencion(Empleado empleadoAtencion) {
@@ -82,31 +70,31 @@ public class Venta {
 	}
 
 	public Empleado getEmpleadoCobro() {
-		return empleadoCobro;
+		return this.empleadoCobro;
 	}
 
 	public void setEmpleadoCobro(Empleado empleadoCobro) {
 		this.empleadoCobro = empleadoCobro;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
 	public Sucursal getSucursal() {
-		return sucursal;
+		return this.sucursal;
 	}
 
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
 
+	public Cliente getCliente() {
+		return this.cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	public List<Item> getItems() {
-		return items;
+		return this.items;
 	}
 
 	public void setItems(List<Item> items) {
@@ -115,10 +103,18 @@ public class Venta {
 
 	@Override
 	public String toString() {
-		return "Venta [nroTicket=" + nroTicket + ", fecha=" + fecha + ", total=" + total + ", formaDePago="
-				+ formaDePago + ", empleadoAtencion=" + empleadoAtencion + ", empleadoCobro=" + empleadoCobro
-				+ ", cliente=" + cliente + ", items=" + items + "]";
-	}
+		return "{" +
+			" nroTicket='" + getNroTicket() + "'" +
+			", fecha='" + getFecha() + "'" +
+			", total='" + getTotal() + "'" +
+			", formaDePago='" + getFormaDePago() + "'" +
+			", empleadoAtencion='" + getEmpleadoAtencion() + "'" +
+			", empleadoCobro='" + getEmpleadoCobro() + "'" +
+			", sucursal='" + getSucursal() + "'" +
+			", cliente='" + getCliente() + "'" +
+			", items='" + getItems() + "'" +
+			"}";
+	}	
 	
 	private float calcularTotal() {
 		float total = 0;
