@@ -4,6 +4,55 @@ function traerFechaCorta(fecha) {
      return fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear();
 }
 
+// Consulta 1
+// Detalle y totales de ventas para la cadena completa y por sucursal, entre fechas. 
+function detallesYTotalesDeVentas(desde, hasta, codigoSucursal = { $exists: true }) {
+     var cursor = db.ventas.aggregate(
+          {
+               $addFields: {
+                    fecha: {
+                         "$toDate": "$fecha"
+                    }
+               }
+          },
+          {
+               $match: {
+                    fecha: {
+                         $gt: desde,
+                         $lt: hasta,
+                    },
+                    "sucursal.codigo": codigoSucursal
+               }
+          },
+          {
+               $group: {
+                    _id: {
+                         "sucursal": "$sucursal.nombre",
+                    },
+                    ventas: {
+                         $addToSet: {
+                              total: "$total",
+                              detalle_venta: "$items"
+                         }
+                    }
+               }
+          },
+          {
+               $project: {
+                    _id: 0,
+                    sucursal: "$_id.sucursal",
+                    ventas: 1
+               }
+          }
+     );
+     let sucursal = (typeof codigoSucursal === 'number') ? ("sucursal " + codigoSucursal) : "cadena completa";
+     print("Detalles y totales de la " + sucursal + " entre " +
+          traerFechaCorta(desde) + " y " + traerFechaCorta(hasta));
+     while (cursor.hasNext()) {
+          print(tojson(cursor.next()));
+     }
+}
+
 // Consulta 5
 // Ranking de ventas de productos, total de la cadena y por sucursal, entre fechas, por monto. 
 function rankingDeProductosPorMonto(desde, hasta, codigoSucursal = { $exists: true }) {
@@ -81,7 +130,7 @@ function rankingDeClientesPorMonto(desde, hasta, codigoSucursal = { $exists: tru
                     _id: {
                          "cliente": "$cliente"
                     },
-                    monto: { $sum: "$total"}
+                    monto: { $sum: "$total" }
                }
           },
           {

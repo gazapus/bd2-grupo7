@@ -142,11 +142,17 @@ public class VentaDao {
 		return gson.toJson(jsonElement);
 	}
 
-	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta){
+	/**
+	 * ranking de productos por monto para la cadena completa entre fechas
+	 **/
+	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta) {
 		return rankingDeProductosPorMonto(fechaDesde, fechaHasta, null);
 	}
 
-	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal){
+	/**
+	 * ranking de productos por monto por sucursal entre fechas
+	 **/
+	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal) {
 		// Filtro entre fechas y sucursal
 		DBObject matchFields = new BasicDBObject();
 		matchFields.put("fecha", BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
@@ -158,8 +164,8 @@ public class VentaDao {
 		DBObject unwind = new BasicDBObject("$unwind", "$items");
 		// Agrupo por producto y monto
 		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("producto", "$items.producto"));
-		groupfields.put("monto", new BasicDBObject("$sum", new BasicDBObject(
-			"$multiply", new String [] { "$items.producto.precio", "$items.cantidad" })));
+		groupfields.put("monto", new BasicDBObject("$sum",
+				new BasicDBObject("$multiply", new String[] { "$items.producto.precio", "$items.cantidad" })));
 		DBObject group = new BasicDBObject("$group", groupfields);
 		// Elijo lo que se va a mostrar
 		DBObject projectFields = new BasicDBObject("_id", 0);
@@ -170,6 +176,37 @@ public class VentaDao {
 		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("monto", -1));
 		// Realiza la consulta de agregacion
 		List<DBObject> pipeline = Arrays.asList(match, unwind, group, project, sort);
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
+
+	/**
+	 * Detalles y totales de ventas para la cadena completa
+	**/
+	public static String detallesYTotalesDeVentas(LocalDate fechaDesde, LocalDate fechaHasta) {
+		return detallesYTotalesDeVentas(fechaDesde, fechaHasta, null);
+	}
+
+	/**
+	 * Detalles y totales de ventas por sucursal entre fechas
+	**/
+	public static String detallesYTotalesDeVentas(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal) {
+		// Filtro entre fechas y sucursal
+		DBObject matchFields = new BasicDBObject();
+		matchFields.put("fecha", BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get());
+		matchFields.put("sucursal.codigo",
+				(sucursal == null) ? (new BasicDBObject("$exists", true)) : sucursal.getCodigo());
+		DBObject match = new BasicDBObject("$match", matchFields);
+		// Agrupo por sucursal y enlisto sus detalles
+		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("sucursal", "$sucursal.nombre"));
+		DBObject venta = new BasicDBObject("total", "$total");
+		venta.put("detalle_venta", "$items");
+		groupfields.put("ventas", new BasicDBObject("$addToSet", venta));
+		DBObject group = new BasicDBObject("$group", groupfields);
+		// Realiza la consulta de agregacion
+		List<DBObject> pipeline = Arrays.asList(match, group);
 		AggregationOutput output = collection.aggregate(pipeline);
 		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
 		return gson.toJson(jsonElement);
