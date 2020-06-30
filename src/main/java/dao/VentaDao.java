@@ -141,4 +141,37 @@ public class VentaDao {
 		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
 		return gson.toJson(jsonElement);
 	}
+
+	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta){
+		return rankingDeProductosPorMonto(fechaDesde, fechaHasta, null);
+	}
+
+	public static String rankingDeProductosPorMonto(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal){
+		// Filtro entre fechas y sucursal
+		DBObject matchFields = new BasicDBObject();
+		matchFields.put("fecha", BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get());
+		matchFields.put("sucursal.codigo",
+				(sucursal == null) ? (new BasicDBObject("$exists", true)) : sucursal.getCodigo());
+		DBObject match = new BasicDBObject("$match", matchFields);
+		// Divido los documentos por cada item
+		DBObject unwind = new BasicDBObject("$unwind", "$items");
+		// Agrupo por producto y monto
+		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("producto", "$items.producto"));
+		groupfields.put("monto", new BasicDBObject("$sum", new BasicDBObject(
+			"$multiply", new String [] { "$items.producto.precio", "$items.cantidad" })));
+		DBObject group = new BasicDBObject("$group", groupfields);
+		// Elijo lo que se va a mostrar
+		DBObject projectFields = new BasicDBObject("_id", 0);
+		projectFields.put("producto", "$_id.producto.descripcion");
+		projectFields.put("monto", 1);
+		DBObject project = new BasicDBObject("$project", projectFields);
+		// Ordeno por monto
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("monto", -1));
+		// Realiza la consulta de agregacion
+		List<DBObject> pipeline = Arrays.asList(match, unwind, group, project, sort);
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
 }
