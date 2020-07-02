@@ -7,7 +7,7 @@ import pojos.Sucursal;
 
 public class Consulta3 {
      public static void main(String[] args) {
-          LocalDate fechaDesde = LocalDate.of(2020, 6, 12);
+          LocalDate fechaDesde = LocalDate.of(2020, 6, 1);
           LocalDate fechaHasta = LocalDate.now();
           try {
                VentaDao.getInstance();
