@@ -183,14 +183,14 @@ public class VentaDao {
 
 	/**
 	 * Detalles y totales de ventas para la cadena completa
-	**/
+	 **/
 	public static String detallesYTotalesDeVentas(LocalDate fechaDesde, LocalDate fechaHasta) {
 		return detallesYTotalesDeVentas(fechaDesde, fechaHasta, null);
 	}
 
 	/**
 	 * Detalles y totales de ventas por sucursal entre fechas
-	**/
+	 **/
 	public static String detallesYTotalesDeVentas(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal) {
 		// Filtro entre fechas y sucursal
 		DBObject matchFields = new BasicDBObject();
@@ -199,14 +199,29 @@ public class VentaDao {
 		matchFields.put("sucursal.codigo",
 				(sucursal == null) ? (new BasicDBObject("$exists", true)) : sucursal.getCodigo());
 		DBObject match = new BasicDBObject("$match", matchFields);
-		// Agrupo por sucursal y enlisto sus detalles
-		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("sucursal", "$sucursal.nombre"));
-		DBObject venta = new BasicDBObject("total", "$total");
-		venta.put("detalle_venta", "$items");
-		groupfields.put("ventas", new BasicDBObject("$addToSet", venta));
+		// Divido los documentos por cada item
+		DBObject unwind = new BasicDBObject("$unwind", "$items");
+		// Agrupo por sucursal, nroticket y total y enlisto sus detalles
+		// Creo el _id del grupo
+		DBObject groupId = new BasicDBObject("nroTicket", "$nroTicket");
+		groupId.put("total", "$total");
+		// Creo el set de detalles
+		DBObject detallesSetFields = new BasicDBObject("producto", "$items.producto.descripcion");
+		detallesSetFields.put("precio", "$items.producot.precio");
+		detallesSetFields.put("cantidad", "$items.cantidad");
+		DBObject detallesSet = new BasicDBObject("$addToSet", detallesSetFields);
+		// Creo los campos del grupo
+		DBObject groupfields = new BasicDBObject("_id", groupId);
+		groupfields.put("detalles", detallesSet);
 		DBObject group = new BasicDBObject("$group", groupfields);
+		// Elijo lo que se va a mostrar
+		DBObject projectFields = new BasicDBObject("_id", 0);
+		projectFields.put("nroTicket", "$_id.nroTicket");
+		projectFields.put("total", "$_id.total");
+		projectFields.put("detalles", "$detalles");
+		DBObject project = new BasicDBObject("$project", projectFields);
 		// Realiza la consulta de agregacion
-		List<DBObject> pipeline = Arrays.asList(match, group);
+		List<DBObject> pipeline = Arrays.asList(match, unwind, group, project);
 		AggregationOutput output = collection.aggregate(pipeline);
 		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
 		return gson.toJson(jsonElement);
@@ -214,15 +229,16 @@ public class VentaDao {
 
 	/**
 	 * Detalles y totales de ventas para la cadena completa
-	**/
+	 **/
 	public static String detallesYTotalesDeVentasPorMedioDePago(LocalDate fechaDesde, LocalDate fechaHasta) {
 		return detallesYTotalesDeVentasPorMedioDePago(fechaDesde, fechaHasta, null);
 	}
 
 	/**
 	 * Detalles y totales de ventas por sucursal entre fechas
-	**/
-	public static String detallesYTotalesDeVentasPorMedioDePago(LocalDate fechaDesde, LocalDate fechaHasta, Sucursal sucursal) {
+	 **/
+	public static String detallesYTotalesDeVentasPorMedioDePago(LocalDate fechaDesde, LocalDate fechaHasta,
+			Sucursal sucursal) {
 		// Filtro entre fechas y sucursal
 		DBObject matchFields = new BasicDBObject();
 		matchFields.put("fecha", BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
@@ -230,25 +246,45 @@ public class VentaDao {
 		matchFields.put("sucursal.codigo",
 				(sucursal == null) ? (new BasicDBObject("$exists", true)) : sucursal.getCodigo());
 		DBObject match = new BasicDBObject("$match", matchFields);
-		// Agrupo por sucursal y medio de pago y enlisto sus detalles
-		DBObject groupfields = new BasicDBObject("_id", new BasicDBObject("sucursal", "$sucursal.nombre").append(
-			"formaDePago", "$formaDePago.nombre"));
-		DBObject venta = new BasicDBObject("total", "$total");
-		venta.put("detalle_venta", "$items");
-		groupfields.put("ventas", new BasicDBObject("$addToSet", venta));
+		// Divido los documentos por cada item
+		DBObject unwind = new BasicDBObject("$unwind", "$items");
+		// Agrupo por sucursal, nroticket y total y enlisto sus detalles
+		// Creo el _id del grupo
+		DBObject groupId = new BasicDBObject("nroTicket", "$nroTicket");
+		groupId.put("total", "$total");
+		groupId.put("medio_de_pago", "$formaDePago");
+		// Creo el set de detalles
+		DBObject detallesSetFields = new BasicDBObject("producto", "$items.producto.descripcion");
+		detallesSetFields.put("precio", "$items.producot.precio");
+		detallesSetFields.put("cantidad", "$items.cantidad");
+		DBObject detallesSet = new BasicDBObject("$addToSet", detallesSetFields);
+		// Creo los campos del grupo
+		DBObject groupfields = new BasicDBObject("_id", groupId);
+		groupfields.put("detalles", detallesSet);
 		DBObject group = new BasicDBObject("$group", groupfields);
+
+		// Agrupo por medio de pago y enlisto sus detalles
+		// Creo el _id del grupo
+		DBObject groupId2 = new BasicDBObject("medio_de_pago", "$_id.medio_de_pago.nombre");
+		// Creo el set de detalles
+		DBObject detallesSetFields2 = new BasicDBObject("nroTicket", "$_id.nroTicket");
+		detallesSetFields2.put("total", "$_id.total");
+		detallesSetFields2.put("detalles", "$detalles");
+		DBObject detallesSet2 = new BasicDBObject("$addToSet", detallesSetFields2);
+		// Creo los campos del grupo
+		DBObject groupfields2 = new BasicDBObject("_id", groupId2);
+		groupfields2.put("detalles", detallesSet2);
+		DBObject group2 = new BasicDBObject("$group", groupfields2);
 		// Elijo lo que se va a mostrar
 		DBObject projectFields = new BasicDBObject("_id", 0);
-		projectFields.put("sucursal", "$_id.sucursal");
-		projectFields.put("medio_de_pago", "$_id.formaDePago");
-		projectFields.put("ventas", 1);
+		projectFields.put("medio_de_pago", "$_id.medio_de_pago");
+		projectFields.put("ventas", "$detalles");
 		DBObject project = new BasicDBObject("$project", projectFields);
 		// Realiza la consulta de agregacion
-		List<DBObject> pipeline = Arrays.asList(match, group, project);
+		List<DBObject> pipeline = Arrays.asList(match, unwind, group, group2, project);
 		AggregationOutput output = collection.aggregate(pipeline);
 		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
 		return gson.toJson(jsonElement);
 	}
-
 
 }
