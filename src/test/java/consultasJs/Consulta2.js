@@ -30,11 +30,13 @@ cursor = db.ventas.aggregate([
     {
         $group: {
             _id: {
-                sucursal: "$sucursal",
                 ticket: "$ticket"
             },
             obra_social: {
                 "$addToSet": "$obra_social"
+            },
+            sucursal: {
+                "$addToSet": "$sucursal"
             },
             total: {
                 "$addToSet": "$total"
@@ -50,14 +52,14 @@ cursor = db.ventas.aggregate([
     {
         $group: {
             _id: {
-                sucursal: "$_id.sucursal"
+                sucursal: "$sucursal",
+                obra_social: "$obra_social"
             },         
             total: {
                 "$sum": "$total"
             },
             ventas: {
                 "$addToSet": {
-                    obra_social: "$obra_social",
                     total: "$total",
                     detalle: "$detalle"
                 },

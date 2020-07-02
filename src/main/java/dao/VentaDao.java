@@ -84,25 +84,194 @@ public class VentaDao {
 		return result.getN() == 1;
 	}
 
-	public static String PorSucursalYObraSocialEntreFechas(LocalDate fechaDesde, LocalDate fechaHasta) {
+	// Consulta 2
+	public static String porSucursalYObraSocial(LocalDate fechaDesde, LocalDate fechaHasta) {
 		// Filtro entre fechas
 		DBObject cond = BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
 				.add("$lt", fechaHasta.toString()).get();
 		DBObject fields = new BasicDBObject("fecha", cond);
 		DBObject match = new BasicDBObject("$match", fields);
 
+		// Unwind de items
+		DBObject unwindItems = new BasicDBObject("$unwind", "$items");
+
+		// Project de la informacion que me interesa
+		DBObject detalle = new BasicDBObject("producto", "$items.producto.descripcion");
+		detalle.put("precio", "$items.producto.precio");
+		detalle.put("cantidad", "$items.cantidad");
+		fields = new BasicDBObject("ticket", "$nroTicket");
+		fields.put("sucursal", "$sucursal.nombre");
+		fields.put("total", "$total");
+		fields.put("obra_social", "$cliente.obraSocial.nombre");
+		fields.put("detalle", detalle);
+		DBObject project = new BasicDBObject("$project", fields);
+
+		// Reagrupo con la informacion que tengo
+		fields = new BasicDBObject("_id", new BasicDBObject("ticket", "$ticket"));
+		fields.put("sucursal", new BasicDBObject("$addToSet", "$sucursal"));
+		fields.put("obra_social", new BasicDBObject("$addToSet", "$obra_social"));
+		fields.put("total", new BasicDBObject("$addToSet", "$total"));
+		fields.put("detalle", new BasicDBObject("$addToSet", "$detalle"));
+		DBObject groupUno = new BasicDBObject("$group", fields);
+
+		// Hago unwind del total para sumarlo por sucursal
+		DBObject unwindTotal = new BasicDBObject("$unwind", "$total");
+
 		// Agrupo por surcursal y obra social
-		DBObject group_id = new BasicDBObject("sucursal", "$sucursal.nombre");
-		group_id.put("obra_social", "$cliente.obraSocial.nombre");
+		DBObject group_id = new BasicDBObject("sucursal", "$sucursal");
+		group_id.put("obra_social", "$obra_social");
 		fields = new BasicDBObject("_id", group_id);
+		fields.put("total", new BasicDBObject("$sum", "$total"));
 		DBObject venta = new BasicDBObject("total", "$total");
-		venta.put("detalle_venta", "$items");
+		venta.put("detalle", "$detalle");
 		fields.put("ventas", new BasicDBObject("$addToSet", venta));
-		DBObject group = new BasicDBObject("$group", fields);
+		DBObject groupDos = new BasicDBObject("$group", fields);
 
 		List<DBObject> myList = new ArrayList<DBObject>();
 		myList.add(match);
-		myList.add(group);
+		myList.add(unwindItems);
+		myList.add(project);
+		myList.add(groupUno);
+		myList.add(unwindTotal);
+		myList.add(groupDos);
+
+		List<DBObject> pipeline = myList;
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
+
+	// Consulta 4
+	public static String porSucursalYTipo(LocalDate fechaDesde, LocalDate fechaHasta) {
+		// Filtro entre fechas
+		DBObject cond = BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get();
+		DBObject fields = new BasicDBObject("fecha", cond);
+		DBObject match = new BasicDBObject("$match", fields);
+
+		// Unwind de items
+		DBObject unwindItems = new BasicDBObject("$unwind", "$items");
+
+		// Project de la informacion que me interesa
+		DBObject detalle = new BasicDBObject("producto", "$items.producto.descripcion");
+		detalle.put("tipo", "items.producto.tipo.nombre");
+		detalle.put("precio", "$items.producto.precio");
+		detalle.put("cantidad", "$items.cantidad");
+		fields = new BasicDBObject("ticket", "$nroTicket");
+		fields.put("sucursal", "$sucursal.nombre");
+		fields.put("total", "$total");
+		fields.put("obra_social", "$cliente.obraSocial.nombre");
+		fields.put("detalle", detalle);
+		DBObject project = new BasicDBObject("$project", fields);
+
+		// Reagrupo con lo que interesa
+		DBObject group_id = new BasicDBObject("sucursal", "$sucursal");
+		group_id.put("ticket", "$ticket");
+		fields = new BasicDBObject("_id", group_id);
+		fields.put("total", new BasicDBObject("$addToSet", "$total"));
+		fields.put("detalle", new BasicDBObject("$addToSet", "$detalle"));
+		DBObject groupUno = new BasicDBObject("$group", fields);
+
+		// Unwind de los totales
+		DBObject unwindTotal = new BasicDBObject("$unwind", "$total");
+
+		// Agrupo por sucursales
+		fields = new BasicDBObject("_id", new BasicDBObject("sucursal", "$sucursal"));
+		fields.put("total", new BasicDBObject("$sum", "$total"));
+		DBObject ventas = new BasicDBObject("total", "$total");
+		ventas.put("detalle", "$detalle");
+		fields.put("ventas", ventas);
+		DBObject groupDos = new BasicDBObject("$group", fields);
+
+		List<DBObject> myList = new ArrayList<DBObject>();
+		myList.add(match);
+		myList.add(unwindItems);
+		myList.add(project);
+		myList.add(groupUno);
+		myList.add(unwindTotal);
+		myList.add(groupDos);
+
+		List<DBObject> pipeline = myList;
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
+
+	// Consulta 6
+	public static String rankingProductoPorCantidad(LocalDate fechaDesde, LocalDate fechaHasta) {
+		// Filtro entre fechas
+		DBObject cond = BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get();
+		DBObject fields = new BasicDBObject("fecha", cond);
+		DBObject match = new BasicDBObject("$match", fields);
+
+		// Unwind de items
+		DBObject unwindItems = new BasicDBObject("$unwind", "$items");
+
+		// Agrupo y sumo la cantidad
+		DBObject group_id = new BasicDBObject("sucursal", "$sucursal.nombre");
+		group_id.put("producto", "$items.producto.descripcion");
+		fields = new BasicDBObject("_id", group_id);
+		fields.put("cantidad", new BasicDBObject("$sum", "$items.cantidad"));
+		DBObject groupUno = new BasicDBObject("$group", fields);
+
+		// Agrupo por cada producto
+		fields = new BasicDBObject("_id", new BasicDBObject("producto", "$_id.producto"));
+		fields.put("total", new BasicDBObject("$sum", "$cantidad"));
+		DBObject cantidadPorSucursal = new BasicDBObject("sucursal", "$_id.sucursal");
+		cantidadPorSucursal.put("cantidad", "$cantidad");
+		fields.put("cantidad_por_sucursal", new BasicDBObject("$addToSet", cantidadPorSucursal));
+		DBObject groupDos = new BasicDBObject("$group", fields);
+
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("total", 1));
+
+		List<DBObject> myList = new ArrayList<DBObject>();
+		myList.add(match);
+		myList.add(unwindItems);
+		myList.add(groupUno);
+		myList.add(groupDos);
+		myList.add(sort);
+
+		List<DBObject> pipeline = myList;
+		AggregationOutput output = collection.aggregate(pipeline);
+		JsonElement jsonElement = new JsonParser().parse(output.results().toString());
+		return gson.toJson(jsonElement);
+	}
+
+	// Consulta 8
+	public static String rankingClientePorCantidad(LocalDate fechaDesde, LocalDate fechaHasta) {
+		// Filtro entre fechas
+		DBObject cond = BasicDBObjectBuilder.start().add("$gt", fechaDesde.toString())
+				.add("$lt", fechaHasta.toString()).get();
+		DBObject fields = new BasicDBObject("fecha", cond);
+		DBObject match = new BasicDBObject("$match", fields);
+
+		// Unwind de items
+		DBObject unwindItems = new BasicDBObject("$unwind", "$items");
+
+		// Agrupo y sumo la cantidad
+		DBObject group_id = new BasicDBObject("sucursal", "$sucursal.nombre");
+		group_id.put("cliente", "$cliente.dni");
+		fields = new BasicDBObject("_id", group_id);
+		fields.put("cantidad", new BasicDBObject("$sum", "$items.cantidad"));
+		DBObject groupUno = new BasicDBObject("$group", fields);
+
+		// Agrupo por cada cliente
+		fields = new BasicDBObject("_id", new BasicDBObject("cliente", "$_id.cliente"));
+		fields.put("total", new BasicDBObject("$sum", "$cantidad"));
+		DBObject cantidadPorSucursal = new BasicDBObject("sucursal", "$_id.sucursal");
+		cantidadPorSucursal.put("cantidad", "$cantidad");
+		fields.put("cantidad_por_sucursal", new BasicDBObject("$addToSet", cantidadPorSucursal));
+		DBObject groupDos = new BasicDBObject("$group", fields);
+
+		DBObject sort = new BasicDBObject("$sort", new BasicDBObject("total", 1));
+
+		List<DBObject> myList = new ArrayList<DBObject>();
+		myList.add(match);
+		myList.add(unwindItems);
+		myList.add(groupUno);
+		myList.add(groupDos);
+		myList.add(sort);
 
 		List<DBObject> pipeline = myList;
 		AggregationOutput output = collection.aggregate(pipeline);
