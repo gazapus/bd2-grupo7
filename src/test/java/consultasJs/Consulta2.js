@@ -1,7 +1,7 @@
 conn = new Mongo();
 db = conn.getDB("myDatabase");
-db = connect("localhost:27017/prueba");
-db = db.getSiblingDB('prueba');
+db = connect("localhost:27017/farmacia");
+db = db.getSiblingDB('farmacia');
 
 cursor = db.ventas.aggregate([
     {

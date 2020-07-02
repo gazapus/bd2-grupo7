@@ -2,14 +2,8 @@
 Para cargar la base de datos correr la clase CargaBD.java ubicada en src/main/test/java
 
 ### Ejecutar consultas desde java
-Las consultas se encuentran como funciones de la clase **VentaDao** y pueden ejecutarse desde los test ubicados en el src/main/test/java/consultas
+Las consultas se encuentran como funciones de la clase **VentaDao** y pueden ejecutarse desde los test ubicados en el _src/main/test/java/consultas_
 
 ### Ejecutar consultas desde el shell de mongo*
-Las consultas se encuentran como funciones en el archivo **consultas.js** 
-  
-Para correr las consultas primero hay que cargarlas al cliente de mongo, puede hacerse desde la consola del mismo mediante el comando: 
->load("{path}/consultas.js)  
-
-Luego pueden llamarse a las consultas por el nombre de sus funciones pasando los parametros necesarios o también puede ejecutar el archivo **test_consultas** que ya contiene los test de las consultas mediante el mismo comando _load("{path}/test_consultas.js")_
-
-(*) A consultar
+También es posible ejecutar las consultas que se encuentran embebidas en un archivo javascript por cada una.
+Las mismas se encuentran en _src/main/test/java/consultas/consultasJS_
