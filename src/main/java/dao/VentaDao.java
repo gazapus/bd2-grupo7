@@ -130,7 +130,7 @@ public class VentaDao {
 		DBObject group = new BasicDBObject("$group", groupfields);
 		// Elijo lo que se va a mostrar
 		DBObject projectFields = new BasicDBObject("_id", 0);
-		projectFields.put("cliente", "$_id.cliente.dni");
+		projectFields.put("cliente DNI", "$_id.cliente.dni");
 		projectFields.put("monto", 1);
 		DBObject project = new BasicDBObject("$project", projectFields);
 		// Ordeno por monto
